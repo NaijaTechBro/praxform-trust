@@ -11,8 +11,8 @@ import Spinner from '../../components/Common/Spinner';
 
 const SettingsPage = () => {
     const { organization, loading: orgLoading } = useOrganization();
-    const [searchParams] = useSearchParams();
-    
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile');
 
     useEffect(() => {
@@ -22,7 +22,12 @@ const SettingsPage = () => {
         }
     }, [searchParams, activeTab]);
 
-    // --- The conflicting useEffect that checked location.pathname has been REMOVED ---
+    const handleTabClick = (tabName) => {
+        // This creates a new URLSearchParams object to avoid direct mutation
+        const newParams = new URLSearchParams(searchParams);
+        newParams.set('tab', tabName);
+        setSearchParams(newParams);
+    };
 
     const renderContent = () => {
         switch (activeTab) {
@@ -35,7 +40,6 @@ const SettingsPage = () => {
             case 'billing':
                 return <BillingTab />;
             default:
-                // Fallback to profile tab if the URL param is invalid
                 return <ProfileTab />;
         }
     };
@@ -50,10 +54,11 @@ const SettingsPage = () => {
             <p className="text-sm text-gray-500 dark:text-gray-400 text-sm mb-6">Manage your profile, security, and API settings.</p>
 
             <div className="mb-6 flex space-x-2">
-                <button onClick={() => setActiveTab('profile')} className={`px-4 py-2 rounded-full font-medium transition-colors ${activeTab === 'profile' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}>Profile</button>
-                <button onClick={() => setActiveTab('security')} className={`px-4 py-2 rounded-full font-medium transition-colors ${activeTab === 'security' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}>Security</button>
-                <button onClick={() => setActiveTab('apiKeys')} className={`px-4 py-2 rounded-full font-medium transition-colors ${activeTab === 'apiKeys' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}>API & Webhooks</button>
-                <button onClick={() => setActiveTab('billing')} className={`px-4 py-2 rounded-full font-medium transition-colors ${activeTab === 'billing' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}>Billing & Plan</button>
+                {/* --- FIX: Buttons now call the new handler function --- */}
+                <button onClick={() => handleTabClick('profile')} className={`px-4 py-2 rounded-full font-medium transition-colors ${activeTab === 'profile' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}>Profile</button>
+                <button onClick={() => handleTabClick('security')} className={`px-4 py-2 rounded-full font-medium transition-colors ${activeTab === 'security' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}>Security</button>
+                <button onClick={() => handleTabClick('apiKeys')} className={`px-4 py-2 rounded-full font-medium transition-colors ${activeTab === 'apiKeys' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}>API & Webhooks</button>
+                <button onClick={() => handleTabClick('billing')} className={`px-4 py-2 rounded-full font-medium transition-colors ${activeTab === 'billing' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'}`}>Billing & Plan</button>
             </div>
 
             {renderContent()}

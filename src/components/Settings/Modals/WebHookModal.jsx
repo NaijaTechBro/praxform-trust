@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useWebhooks } from '../../context/WebhookContext';
+import { useWebhooks } from '../../../context/WebhookContext';
 import { FiX } from 'react-icons/fi';
 import { toast } from 'react-toastify';
-import Spinner from '../Common/Spinner';
+import Spinner from '../../Common/Spinner';
 
 const AVAILABLE_EVENTS = [
     'form.created', 'form.updated', 'form.deleted', 'organization.updated', 'organization.api_keys_regenerated','submission.created', 'payment.successful', 'payment.failed'

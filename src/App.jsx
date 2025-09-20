@@ -34,7 +34,6 @@ import ChangePassword from './pages/Auth/User/ChangePassword';
 import Submissions from './pages/Submission/Submission';
 import CreateFromTemplatePage from './components/Template/CreateFormTemplate';
 import SettingsPage from './pages/Settings/SettingsPage';
-import BillingSettings from './pages/Settings/BillingSettings';
 
 // Context Providers
 import { AuthProvider } from './context/AuthContext';
@@ -98,7 +97,6 @@ const App = () => {
                     <Route path='/change-password' element={<ChangePassword />} />
                     <Route path='/submissions' element={<Submissions />} />
                     <Route path='/settings' element={<SettingsPage />} />
-                    <Route path='/settings/billing' element={<BillingSettings />} />
                   </Route>
                   {/* Full-screen protected routes */}
                   <Route path='/forms/new' element={<BlankFormPage />} />

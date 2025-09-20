@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useOrganization } from '../../context/OrganizationContext';
-import ImageUploader from '../Common/ImageUploader';
+import { useOrganization } from '../../../context/OrganizationContext';
+import ImageUploader from '../../Common/ImageUploader';
 
 // Helper component for form inputs - Updated for dark mode
 const InputField = ({ label, ...props }) => (

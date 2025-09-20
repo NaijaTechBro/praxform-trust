@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../../context/AuthContext';
 import { FiX, FiEye, FiEyeOff } from 'react-icons/fi';
 import { toast } from 'react-toastify';
-import lock from '../../assets/lock.png';
+import lock from '../../../assets/lock.png';
 
 const UpdatePasswordModal = ({ onClose }) => {
     // ... (rest of state and logic is unchanged) ...

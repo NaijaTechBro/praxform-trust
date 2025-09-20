@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
-import { useOrganization } from '../../context/OrganizationContext';
+import { useOrganization } from '../../../context/OrganizationContext';
 import { toast } from 'react-toastify';
 import { FiX, FiEye, FiEyeOff, FiAlertCircle, FiCopy } from 'react-icons/fi';
-import key from '../../assets/red-alert.png'; // Make sure this path is correct
+import key from '../../../assets/red-alert.png'; // Make sure this path is correct
 
 const GenerateNewKeyModal = ({ onDone, onCancel }) => {
     const { generateApiKey } = useOrganization();

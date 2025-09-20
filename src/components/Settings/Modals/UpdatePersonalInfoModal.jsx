@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import ImageUploader from '../Common/ImageUploader'; // Import the new component
+import { useAuth } from '../../../context/AuthContext';
+import ImageUploader from '../../Common/ImageUploader'; // Import the new component
 
 const UpdatePersonalInfoModal = ({ onClose }) => {
     const { user, updatePersonalInfo, updateUserAvatar } = useAuth();

@@ -74,8 +74,11 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
           ) : (
             <img src={icon} alt="icon" className="w-10 h-10 rounded-lg" />
           )}
-          <button onClick={toggleSidebar} className="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white hidden md:block transition-transform duration-300 ease-in-out">
-            {isSidebarOpen ? menuIcons.arrowLeft : menuIcons.arrowRight}
+          <button 
+          onClick={toggleSidebar} 
+          className="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-transform duration-300 ease-in-out"
+          >   
+          {isSidebarOpen ? menuIcons.arrowLeft : menuIcons.arrowRight}
           </button>
         </div>
 
@@ -127,25 +130,6 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
 
         {/* User Profile with Dropdown */}
         <div className="mt-auto border-t border-gray-200 dark:border-gray-700 pt-4">
-          {/* <Menu as="div" className="relative">
-            {({ open }) => (
-              <>
-                <Menu.Button className={`flex items-center w-full focus:outline-none ${isSidebarOpen ? 'justify-between' : 'justify-center'}`}>
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 rounded-full bg-yellow-400 flex items-center justify-center font-bold text-white">
-                      {user && user.firstName ? user.firstName.charAt(0).toUpperCase() : 'P'}
-                    </div>
-                    {isSidebarOpen && (
-                      <span className="ml-3 text-sm font-semibold text-gray-800 dark:text-gray-100">
-                        {user ? `${user.firstName} ${user.lastName}` : 'Guest User'}
-                      </span>
-                    )}
-                  </div>
-                </Menu.Button>
-              </>
-            )}
-          </Menu> */}
-
               <Menu as="div" className="relative">
                     <Menu.Button className={`flex items-center w-full focus:outline-none ${isSidebarOpen ? 'justify-between' : 'justify-center'}`}>
                         <div className="flex items-center">

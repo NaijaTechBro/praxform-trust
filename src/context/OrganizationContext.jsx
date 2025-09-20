@@ -89,26 +89,7 @@ export const OrganizationProvider = ({ children }) => {
         }
     };
 
-    const generateApiKey = async (password) => {
-        if (!organization?._id) {
-            toast.error("Organization not found.");
-            return { success: false };
-        }
-        try {
-            const response = await axios.post(
-                `${API_BASE_URL}/organizations/${organization._id}/api-keys`,
-                { password } 
-            );
-            
-            // Return the full response from the API, which includes the new unhashed secret key
-            return { success: true, ...response.data };
 
-        } catch (err) {
-            const errorMessage = err.response?.data?.message || 'Failed to generate new keys.';
-            toast.error(errorMessage);
-            return { success: false, message: errorMessage };
-        }
-    };
 
     /**
      * Updates the current organization's logo.
@@ -136,7 +117,27 @@ export const OrganizationProvider = ({ children }) => {
             return { success: false };
         }
     };
-   
+
+    const generateApiKey = async (password) => {
+        if (!organization?._id) {
+            toast.error("Organization not found.");
+            return { success: false };
+        }
+        try {
+            const response = await axios.post(
+                `${API_BASE_URL}/organizations/${organization._id}/api-keys`,
+                { password } 
+            );
+            
+            // Just return the successful response from the API
+            return { success: true, ...response.data };
+
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || 'Failed to generate new keys.';
+            toast.error(errorMessage);
+            return { success: false, message: errorMessage };
+        }
+    };
 
     const value = {
         organization,

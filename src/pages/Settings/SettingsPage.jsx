@@ -9,7 +9,6 @@ import { Switch } from '@headlessui/react';
 import { FiEye, FiEyeOff, FiTrash2, FiEdit, FiPlus, FiCopy } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
-
 // Import all necessary modals
 import UpdatePasswordModal from '../../components/Settings/UpdatePasswordModal';
 import UpdatePersonalInfoModal from '../../components/Settings/UpdatePersonalInfoModal';
@@ -127,6 +126,13 @@ const SettingsPage = () => {
     const [showPersonalInfoModal, setShowPersonalInfoModal] = useState(false);
     const [showOrgInfoModal, setShowOrgInfoModal] = useState(false);
     const [showGenerateKeyModal, setShowGenerateKeyModal] = useState(false);
+    
+     const handleKeyGenerationDone = async () => {
+        setShowGenerateKeyModal(false);
+        if (organization?._id) {
+            await fetchOrganizationDetails(organization._id);
+        }
+    };
     const [webhooks, setWebhooks] = useState([]);
     const [showWebhookModal, setShowWebhookModal] = useState(false);
     const [editingWebhook, setEditingWebhook] = useState(null);
@@ -460,12 +466,7 @@ const SettingsPage = () => {
             {showGenerateKeyModal && (
                 <GenerateNewKeyModal
                     onCancel={() => setShowGenerateKeyModal(false)}
-                    onDone={() => {
-                        setShowGenerateKeyModal(false);
-                        if (organization?._id) {
-                            fetchOrganizationDetails(organization._id);
-                        }
-                    }}
+                    onDone={handleKeyGenerationDone}
                 />
             )}
             {showWebhookModal && (

@@ -14,6 +14,8 @@ import ResendVerification from './pages/Auth/User/ResendVerification';
 import VerifyCode from './pages/Auth/User/VerifyCode';
 import BookADemo from './components/Home/BookADemo';
 import Pricing from './components/Home/Pricing';
+import PrivacyPolicy from './components/Home/legal/PrivacyPolicy';
+import TermsOfUse from './components/Home/legal/TermsofUse';
 
 // New Public Form Page
 import PublicForm from './pages/Submission/PublicForm';
@@ -35,6 +37,10 @@ import Submissions from './pages/Submission/Submission';
 import CreateFromTemplatePage from './components/Template/CreateFormTemplate';
 import SettingsPage from './pages/Settings/SettingsPage';
 
+// Blog
+import BlogAdminPage from './pages/Blog/BlogAdminPage';
+import BlogPostEditor from './pages/Blog/BlogPostEditor';
+
 // Context Providers
 import { AuthProvider } from './context/AuthContext';
 import { FormProvider } from './context/FormContext';
@@ -48,6 +54,10 @@ import { ThemeProvider } from './context/ThemeContext';
 import { PaymentProvider } from './context/PaymentContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import { UploadProvider } from './context/UploadContext';
+import { BlogProvider } from './context/BlogContext';
+import CookiePolicy from './components/Home/legal/CookiePolicy';
+import About from './components/Home/company/About';
+import Careers from './components/Home/company/Careers';
 
 const App = () => {
   return (
@@ -63,6 +73,7 @@ const App = () => {
               <NotificationProvider>
                 <PaymentProvider>
                   <UploadProvider>
+                    <BlogProvider>
             <Router>
               <Routes>
                 {/* --- Public Routes (Accessible to everyone) --- */}
@@ -77,6 +88,12 @@ const App = () => {
                 <Route path="/resend-verification" element={<ResendVerification />} />
                 <Route path="/demo" element={<BookADemo />} />
                 <Route path="/pricing" element={<Pricing />} />
+                <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+                <Route path='/terms-of-use' element={<TermsOfUse />} />
+                <Route path='/cookie-policy' element={<CookiePolicy />} />
+                <Route path='/about' element={<About />} />
+                <Route path='/careers' element={<Careers/>} />
+
 
                 {/* The PublicForm route must be public to allow anyone with the link to access it */}
                 <Route path="/form/:formId/:accessCode" element={<PublicForm />} />
@@ -103,9 +120,13 @@ const App = () => {
                   <Route path='/forms/edit/:id' element={<EditFormPage />} />
 
                   <Route path='/forms/new/template/:templateId' element={<CreateFromTemplatePage />} />
+                   <Route path="/blog-admin" element={<BlogAdminPage />} />
+                    <Route path="/blog-admin/new" element={<BlogPostEditor />} />
+                      <Route path="/blog-admin/edit/:id" element={<BlogPostEditor />} />
                 </Route>
               </Routes>
             </Router>
+            </BlogProvider>
             </UploadProvider>
             </PaymentProvider>
             </NotificationProvider>

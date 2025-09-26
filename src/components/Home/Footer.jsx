@@ -68,9 +68,9 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-sm uppercase tracking-wider text-gray-400">Legal</h4>
             <ul className="mt-4 space-y-3">
-              <FooterLink href="/terms">Terms of Use</FooterLink>
-              <FooterLink href="/privacy">Privacy Policy</FooterLink>
-              <FooterLink href="/cookies">Cookie Policy</FooterLink>
+              <FooterLink href="/terms-of-use">Terms of Use</FooterLink>
+              <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
+              <FooterLink href="/cookie-policy">Cookie Policy</FooterLink>
             </ul>
           </div>
 

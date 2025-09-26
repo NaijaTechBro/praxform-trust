@@ -59,9 +59,9 @@ const Header = () => {
         <div className="md:hidden" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a href="#features" className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Features</a>
-            <a href="#pricing" className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Pricing</a>
             <a href="#support" className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Support</a>
             <a href="#contact" className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Contact Us</a>
+             <a href="/pricing" className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Pricing</a>
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="px-2 space-y-2">

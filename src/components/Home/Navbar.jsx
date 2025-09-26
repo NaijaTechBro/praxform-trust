@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import logo from '../../assets/logo.png'; 
 
-const Header = () => {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const customColor = {
@@ -90,4 +90,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Navbar;

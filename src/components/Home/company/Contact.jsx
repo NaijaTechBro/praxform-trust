@@ -38,10 +38,10 @@ const Contact = () => {
             </h2>
             <dl className="mt-12 space-y-8">
               <ContactInfoItem label="Email">
-                <a href="mailto:info@mesiot.com" className="hover:text-[#1475F4]">info@mesiot.com</a>
+                <a href="mailto:contact@praxform.com" className="hover:text-[#1475F4]">contact@praxform.com</a>
               </ContactInfoItem>
               <ContactInfoItem label="Phone">
-                <a href="tel:+2349012345678" className="hover:text-[#1475F4]">+2349012345678</a>
+                <a href="tel:+19012345678" className="hover:text-[#1475F4]">+1 (901) 2345 678</a>
               </ContactInfoItem>
               <ContactInfoItem label="Socials">
                 <div className="flex flex-col space-y-2">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Header from './Header';
+import Navbar from './Navbar';
 import Footer from './Footer';
 import { usePayments } from '../../context/PaymentContext';
 import Spinner from '../Common/Spinner';
@@ -78,7 +78,7 @@ const Pricing = () => {
 
     return (
         <>
-            <Header />
+            <Navbar />
             <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 via-white to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-800 pt-20 pb-10 sm:pt-32 sm:pb-16">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
                     <h2 className="text-sm font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">

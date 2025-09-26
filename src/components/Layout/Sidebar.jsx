@@ -70,9 +70,9 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen }) => {
       >
         <div className={`flex items-center ${isSidebarOpen ? 'justify-between' : 'justify-center'} mb-10`}>
           {isSidebarOpen ? (
-            <img src={logo} alt="Logo" className="w-35 h-10 mb-10" />
+            <a href='/'><img src={logo} alt="Logo" className="w-35 h-10 mb-10" /></a>
           ) : (
-            <img src={icon} alt="icon" className="w-10 h-10 rounded-lg" />
+            <a href='/'><img src={icon} alt="icon" className="w-10 h-10 rounded-lg" /></a>
           )}
           <button 
           onClick={toggleSidebar} 

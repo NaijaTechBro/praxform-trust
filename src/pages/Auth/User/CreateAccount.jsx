@@ -245,7 +245,7 @@ const CreateAccount = () => {
         if (validateForm()) { 
             const userData = { firstName, lastName, email, password };
             localStorage.setItem('tempUserData', JSON.stringify(userData)); 
-            navigate('/business-setup'); 
+            navigate('/organization-setup');
         }
     };
 

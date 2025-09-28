@@ -428,6 +428,23 @@
 // };
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { createContext, useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -659,25 +676,149 @@ export const AuthProvider = ({ children }) => {
         }
     };
     
-    // All other functions like forgotPassword, resetPassword, etc., remain here...
+        const resendVerification = async (email) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axios.post(`${API_BASE_URL}/auth/resend-verification`, { email });
+            if (response.status === 200) {
+                return { success: true, message: response.data.message };
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || 'Network error or server unavailable.');
+            return { success: false, message: err.response?.data?.message || 'Failed to resend verification email.' };
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    
     const forgotPassword = async (email) => {
-        // implementation
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axios.post(`${API_BASE_URL}/auth/forgot-password`, { email });
+            if (response.status === 200) {
+                return { success: true, message: response.data.message };
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || 'Network error or server unavailable.');
+            return { success: false, message: err.response?.data?.message || 'Failed to send password reset email.' };
+        } finally {
+            setLoading(false);
+        }
     };
+
     const resetPassword = async (token, newPassword) => {
-        // implementation
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axios.put(`${API_BASE_URL}/auth/reset-password/${token}`, { password: newPassword });
+            if (response.status === 200) {
+                const newAccessToken = response.data.accessToken;
+                localStorage.setItem('userToken', newAccessToken);
+                setToken(newAccessToken);
+                return { success: true, message: response.data.message };
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || 'Network error or server unavailable.');
+            return { success: false, message: err.response?.data?.message || 'Failed to reset password.' };
+        } finally {
+            setLoading(false);
+        }
     };
+
     const changePassword = async (oldPassword, newPassword) => {
-        // implementation
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await axios.put(`${API_BASE_URL}/auth/change-password`, { oldPassword, newPassword });
+            if (response.status === 200) {
+                return { success: true, message: response.data.message };
+            }
+        } catch (err) {
+            setError(err.response?.data?.message || 'Network error or server unavailable.');
+            return { success: false, message: err.response?.data?.message || 'Failed to change password.' };
+        } finally {
+            setLoading(false);
+        }
     };
+
     const updatePersonalInfo = async (userData) => {
-        // implementation
+        if (!user?._id) {
+            toast.error("Not logged in.");
+            return { success: false };
+        }
+        try {
+            const response = await axios.put(`${API_BASE_URL}/users/${user._id}`, userData);
+            // Update the user state within this context
+            setUser(prevUser => ({ ...prevUser, ...response.data }));
+            toast.success("Profile updated successfully!");
+            return { success: true };
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || 'Failed to update profile.';
+            toast.error(errorMessage);
+            return { success: false, message: errorMessage };
+        }
     };
+
+
     const toggleMfa = async (mfaEnabled, password) => {
-        // implementation
+        if (!user?._id) {
+            toast.error("User not found. Please log in again.");
+            return { success: false };
+        }
+        
+        try {
+            const response = await axios.put(`${API_BASE_URL}/users/${user._id}/mfa-toggle`, {
+                mfaEnabled,
+                password
+            });
+            
+            if (response.data.success) {
+                // IMPORTANT: Update the local user state to reflect the change instantly
+                setUser(prevUser => ({
+                    ...prevUser,
+                    mfaEnabled: response.data.mfaEnabled
+                }));
+                toast.success(response.data.message);
+                return { success: true };
+            }
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || 'Failed to update setting.';
+            toast.error(errorMessage);
+            return { success: false, message: errorMessage };
+        }
     };
+/**
+     * Updates the current user's avatar.
+     * @param {object} avatarData - An object containing { public_id, url }.
+     * @returns {Promise<{success: boolean}>}
+     */
     const updateUserAvatar = async (avatarData) => {
-        // implementation
+        if (!token) {
+            toast.error("You must be logged in to update your avatar.");
+            return { success: false };
+        }
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            };
+            const { data } = await axios.put(`${API_BASE_URL}/users/me/avatar`, avatarData, config);
+            
+            // Update user state immediately for instant UI feedback
+            setUser(prevUser => ({ ...prevUser, avatar: data.avatar }));
+            toast.success(data.message);
+            return { success: true };
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to update avatar.");
+            return { success: false };
+        }
     };
+
 
 
     const clearError = () => {
@@ -697,6 +838,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         verifyMfa,
+        resendVerification,
         loginWithGoogle, // New Google login function
         setupGoogleUserOrganization, // New function for org setup
         forgotPassword,

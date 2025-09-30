@@ -1,5 +1,6 @@
 import React from 'react';
 import featureImage from '../../assets/why.png';
+import { HashLink as Link } from 'react-router-hash-link';
 
 const FeatureItem = ({ title, children, borderColorClass }) => (
   <div className={`border-l-4 ${borderColorClass} pl-6`}>

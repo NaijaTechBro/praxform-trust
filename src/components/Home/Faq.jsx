@@ -86,20 +86,6 @@ const Faq = () => {
             <FaqItem key={index} faq={faq} index={index} />
           ))}
         </div>
-
-        {/* --- CTA Block ---
-        <div className="mt-16 text-center p-8 bg-gray-50 rounded-lg border">
-            <h3 className="text-2xl font-bold text-gray-900">Still have questions?</h3>
-            <p className="mt-2 text-gray-600">
-                Can't find the answer you're looking for? Our support team is here to help.
-            </p>
-            <a 
-                href="#contact" 
-                className="mt-6 inline-block bg-[#1475F4] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1268DA] transition-colors"
-            >
-                Contact Support
-            </a>
-        </div> */}
       </div>
     </section>
   );

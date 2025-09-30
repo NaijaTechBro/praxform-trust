@@ -60,6 +60,7 @@ import { PaymentProvider } from './context/PaymentContext';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import { UploadProvider } from './context/UploadContext';
 import { BlogProvider } from './context/BlogContext';
+import { PublicProvider } from './context/PublicContext';
 
 const App = () => {
   return (
@@ -75,6 +76,7 @@ const App = () => {
                       <PaymentProvider>
                         <UploadProvider>
                           <BlogProvider>
+                            <PublicProvider>
                             <Router>
                               <Routes>
                                 {/* --- Public Routes (Accessible to everyone) --- */}
@@ -127,6 +129,7 @@ const App = () => {
                                 </Route>
                               </Routes>
                             </Router>
+                            </PublicProvider>
                           </BlogProvider>
                         </UploadProvider>
                       </PaymentProvider>

@@ -24,14 +24,11 @@ const InputField = ({ id, label, hasError, isValid, ...props }) => {
                     id={id}
                     {...props}
                     type={isPasswordVisible ? 'text' : originalType}
-                    // The right-padding is now only applied if the input is a password type
                     className={`w-full py-3 px-4 ${originalType === 'password' ? 'pr-10' : ''} rounded-lg border text-gray-800 placeholder-gray-400
                         focus:outline-none focus:ring-2 focus:border-transparent transition
                         ${borderClasses}`}
                 />
 
-                {/* --- VALIDATION ICONS REMOVED --- */}
-                {/* Only the password visibility toggle remains */}
                 {originalType === 'password' && (
                     <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                         {isPasswordVisible

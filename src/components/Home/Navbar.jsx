@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import logo from '../../assets/logo.png'; 
+import { HashLink as Link } from 'react-router-hash-link';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,27 +11,29 @@ const Navbar = () => {
     lightHover: '#E8F1FE'
   };
 
+   const closeMobileMenu = () => setIsMenuOpen(false);
+
   return (
     <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
-            <a href="/" className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <img src={logo} style={{ width: "100px" }} alt="PraxForm Logo"/>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="flex items-center text-gray-700 hover:text-[#1475F4] font-medium">
+           <Link smooth to="/#features" className="flex items-center text-gray-700 hover:text-[#1475F4] font-medium">
               Features
               <svg className="w-4 h-4 ml-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-            </a>
-            <a href="#faqs" className="text-gray-700 hover:text-[#1475F4] font-medium">FAQs</a>
-            <a href="#support" className="text-gray-700 hover:text-[#1475F4] font-medium">Support</a>
-            <a href="#contact" className="text-gray-700 hover:text-[#1475F4] font-medium">Contact Us</a>
-            <a href="/pricing" className="text-gray-700 hover:text-[#1475F4] font-medium">Pricing</a>
-          </nav>
+            </Link>
+            <Link smooth to="/#faqs" className="text-gray-700 hover:text-[#1475F4] font-medium">FAQs</Link>
+            <Link smooth to="/#support" className="text-gray-700 hover:text-[#1475F4] font-medium">Support</Link>
+            <Link smooth to="/#contact" className="text-gray-700 hover:text-[#1475F4] font-medium">Contact Us</Link>
+            <Link to="/pricing" className="text-gray-700 hover:text-[#1475F4] font-medium">Pricing</Link>
+         </nav>
 
           {/* Desktop Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
@@ -69,19 +72,17 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a href="#features" className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Features</a>
-            <a href="#support" className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Support</a>
-            <a href="#contact" className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Contact Us</a>
-            <a href="/pricing" className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Pricing</a>
+          <Link smooth to="/#features" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Features</Link>
+            <Link smooth to="/#support" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Support</Link>
+            <Link smooth to="/#contact" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Contact Us</Link>
+            <Link to="/pricing" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Pricing</Link>
+          
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
             <div className="px-2 space-y-2">
-               <a href="/signin" className="block text-center w-full text-[#1475F4] font-semibold px-4 py-2 rounded-full border-2 border-[#1475F4] hover:bg-[#E8F1FE] transition-colors">
-                Sign In
-              </a>
-              <a href="/signup" className="block text-center w-full bg-[#1475F4] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1268DA] transition-colors">
-                Create Account
-              </a>
+               
+               <Link to="/signin" onClick={closeMobileMenu} className="block text-center w-full text-[#1475F4] font-semibold px-4 py-2 rounded-full border-2 border-[#1475F4] hover:bg-[#E8F1FE] transition-colors">Sign In</Link>
+              <Link to="/signup" onClick={closeMobileMenu} className="block text-center w-full bg-[#1475F4] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1268DA] transition-colors">Create Account</Link>
             </div>
           </div>
         </div>

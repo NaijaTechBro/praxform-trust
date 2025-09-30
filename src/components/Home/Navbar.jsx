@@ -1,94 +1,211 @@
+// import React, { useState } from 'react';
+// import logo from '../../assets/logo.png'; 
+// import { HashLink as Link } from 'react-router-hash-link';
+
+// const Navbar = () => {
+//   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+//   const customColor = {
+//     DEFAULT: '#1475F4',
+//     hover: '#1268DA',
+//     lightHover: '#E8F1FE'
+//   };
+
+//    const closeMobileMenu = () => setIsMenuOpen(false);
+
+//   return (
+//     <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//         <div className="flex items-center justify-between h-16">
+//           <div className="flex-shrink-0">
+//             <Link to="/" className="flex items-center space-x-2">
+//               <img src={logo} style={{ width: "100px" }} alt="PraxForm Logo"/>
+//             </Link>
+//           </div>
+
+//           {/* Desktop Navigation Links */}
+//           <nav className="hidden md:flex items-center space-x-8">
+//            <Link smooth to="/#features" className="flex items-center text-gray-700 hover:text-[#1475F4] font-medium">
+//               Features
+//               <svg className="w-4 h-4 ml-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+//             </Link>
+//             <Link smooth to="/#faqs" className="text-gray-700 hover:text-[#1475F4] font-medium">FAQs</Link>
+//             <Link smooth to="/#support" className="text-gray-700 hover:text-[#1475F4] font-medium">Support</Link>
+//             <Link smooth to="/#contact" className="text-gray-700 hover:text-[#1475F4] font-medium">Contact Us</Link>
+//             <Link to="/pricing" className="text-gray-700 hover:text-[#1475F4] font-medium">Pricing</Link>
+//          </nav>
+
+//           {/* Desktop Action Buttons */}
+//           <div className="hidden md:flex items-center space-x-4">
+//             <a href="/signin" className="text-[#1475F4] font-semibold px-4 py-2 rounded-full border-2 border-[#1475F4] hover:bg-[#E8F1FE] transition-colors">
+//               Sign In
+//             </a>
+//             <a href="/signup" className="bg-[#1475F4] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1268DA] transition-colors">
+//               Create Account
+//             </a>
+//           </div>
+
+//           {/* Mobile Menu Button */}
+//           <div className="md:hidden flex items-center">
+//             <button
+//               onClick={() => setIsMenuOpen(!isMenuOpen)}
+//               className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#1475F4]"
+//               aria-expanded="false"
+//             >
+//               <span className="sr-only">Open main menu</span>
+//               {/* Icon for menu open/close */}
+//               {isMenuOpen ? (
+//                 <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+//                 </svg>
+//               ) : (
+//                 <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+//                 </svg>
+//               )}
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Mobile Menu, show/hide based on menu state. */}
+//       {isMenuOpen && (
+//         <div className="md:hidden" id="mobile-menu">
+//           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+//           <Link smooth to="/#features" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Features</Link>
+//             <Link smooth to="/#support" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Support</Link>
+//             <Link smooth to="/#contact" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Contact Us</Link>
+//             <Link to="/pricing" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Pricing</Link>
+          
+//           </div>
+//           <div className="pt-4 pb-3 border-t border-gray-200">
+//             <div className="px-2 space-y-2">
+               
+//                <Link to="/signin" onClick={closeMobileMenu} className="block text-center w-full text-[#1475F4] font-semibold px-4 py-2 rounded-full border-2 border-[#1475F4] hover:bg-[#E8F1FE] transition-colors">Sign In</Link>
+//               <Link to="/signup" onClick={closeMobileMenu} className="block text-center w-full bg-[#1475F4] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1268DA] transition-colors">Create Account</Link>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </header>
+//   );
+// };
+
+// export default Navbar;
+
+
+
+
+
+
+
 import React, { useState } from 'react';
-import logo from '../../assets/logo.png'; 
+import logo from '../../assets/logo.png';
 import { HashLink as Link } from 'react-router-hash-link';
+import { useAuth } from '../../context/AuthContext'; // 1. Import the useAuth hook
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { user } = useAuth(); // 2. Get the user from the authentication context
 
-  const customColor = {
-    DEFAULT: '#1475F4',
-    hover: '#1268DA',
-    lightHover: '#E8F1FE'
-  };
+    const closeMobileMenu = () => setIsMenuOpen(false);
 
-   const closeMobileMenu = () => setIsMenuOpen(false);
+    return (
+        <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between h-16">
+                    <div className="flex-shrink-0">
+                        <Link to="/" onClick={closeMobileMenu} className="flex items-center space-x-2">
+                            <img src={logo} style={{ width: "100px" }} alt="PraxForm Logo"/>
+                        </Link>
+                    </div>
 
-  return (
-    <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex-shrink-0">
-            <Link to="/" className="flex items-center space-x-2">
-              <img src={logo} style={{ width: "100px" }} alt="PraxForm Logo"/>
-            </Link>
-          </div>
+                    {/* Desktop Navigation Links */}
+                    <nav className="hidden md:flex items-center space-x-8">
+                       <Link smooth to="/#features" className="flex items-center text-gray-700 hover:text-[#1475F4] font-medium">
+                            Features
+                            <svg className="w-4 h-4 ml-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </Link>
+                        <Link smooth to="/#faqs" className="text-gray-700 hover:text-[#1475F4] font-medium">FAQs</Link>
+                        <Link smooth to="/#support" className="text-gray-700 hover:text-[#1475F4] font-medium">Support</Link>
+                        <Link smooth to="/#contact" className="text-gray-700 hover:text-[#1475F4] font-medium">Contact Us</Link>
+                        <Link to="/pricing" className="text-gray-700 hover:text-[#1475F4] font-medium">Pricing</Link>
+                    </nav>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-8">
-           <Link smooth to="/#features" className="flex items-center text-gray-700 hover:text-[#1475F4] font-medium">
-              Features
-              <svg className="w-4 h-4 ml-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-            </Link>
-            <Link smooth to="/#faqs" className="text-gray-700 hover:text-[#1475F4] font-medium">FAQs</Link>
-            <Link smooth to="/#support" className="text-gray-700 hover:text-[#1475F4] font-medium">Support</Link>
-            <Link smooth to="/#contact" className="text-gray-700 hover:text-[#1475F4] font-medium">Contact Us</Link>
-            <Link to="/pricing" className="text-gray-700 hover:text-[#1475F4] font-medium">Pricing</Link>
-         </nav>
+                    {/* 3. Conditionally render desktop action buttons */}
+                    <div className="hidden md:flex items-center space-x-4">
+                        {user ? (
+                            // Show Dashboard button if user is logged in
+                            <Link to="/dashboard" className="bg-[#1475F4] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1268DA] transition-colors">
+                                Go to Dashboard
+                            </Link>
+                        ) : (
+                            // Show Sign In and Create Account buttons if user is not logged in
+                            <>
+                                <Link to="/signin" className="text-[#1475F4] font-semibold px-4 py-2 rounded-full border-2 border-[#1475F4] hover:bg-[#E8F1FE] transition-colors">
+                                    Sign In
+                                </Link>
+                                <Link to="/signup" className="bg-[#1475F4] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1268DA] transition-colors">
+                                    Create Account
+                                </Link>
+                            </>
+                        )}
+                    </div>
 
-          {/* Desktop Action Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <a href="/signin" className="text-[#1475F4] font-semibold px-4 py-2 rounded-full border-2 border-[#1475F4] hover:bg-[#E8F1FE] transition-colors">
-              Sign In
-            </a>
-            <a href="/signup" className="bg-[#1475F4] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1268DA] transition-colors">
-              Create Account
-            </a>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#1475F4]"
-              aria-expanded="false"
-            >
-              <span className="sr-only">Open main menu</span>
-              {/* Icon for menu open/close */}
-              {isMenuOpen ? (
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu, show/hide based on menu state. */}
-      {isMenuOpen && (
-        <div className="md:hidden" id="mobile-menu">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <Link smooth to="/#features" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Features</Link>
-            <Link smooth to="/#support" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Support</Link>
-            <Link smooth to="/#contact" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Contact Us</Link>
-            <Link to="/pricing" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Pricing</Link>
-          
-          </div>
-          <div className="pt-4 pb-3 border-t border-gray-200">
-            <div className="px-2 space-y-2">
-               
-               <Link to="/signin" onClick={closeMobileMenu} className="block text-center w-full text-[#1475F4] font-semibold px-4 py-2 rounded-full border-2 border-[#1475F4] hover:bg-[#E8F1FE] transition-colors">Sign In</Link>
-              <Link to="/signup" onClick={closeMobileMenu} className="block text-center w-full bg-[#1475F4] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1268DA] transition-colors">Create Account</Link>
+                    {/* Mobile Menu Button */}
+                    <div className="md:hidden flex items-center">
+                        <button
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#1475F4]"
+                            aria-expanded="false"
+                        >
+                            <span className="sr-only">Open main menu</span>
+                            {isMenuOpen ? (
+                                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            ) : (
+                                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+                                </svg>
+                            )}
+                        </button>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      )}
-    </header>
-  );
+
+            {/* Mobile Menu */}
+            {isMenuOpen && (
+                <div className="md:hidden" id="mobile-menu">
+                    <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                        <Link smooth to="/#features" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Features</Link>
+                        <Link smooth to="/#support" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Support</Link>
+                        <Link smooth to="/#contact" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Contact Us</Link>
+                        <Link to="/pricing" onClick={closeMobileMenu} className="text-gray-700 hover:bg-gray-50 hover:text-[#1475F4] block px-3 py-2 rounded-md text-base font-medium">Pricing</Link>
+                    </div>
+                    <div className="pt-4 pb-3 border-t border-gray-200">
+                        <div className="px-2 space-y-2">
+                            {/* 4. Conditionally render mobile action buttons */}
+                            {user ? (
+                                <Link to="/dashboard" onClick={closeMobileMenu} className="block text-center w-full bg-[#1475F4] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1268DA] transition-colors">
+                                    Go to Dashboard
+                                </Link>
+                            ) : (
+                                <>
+                                    <Link to="/signin" onClick={closeMobileMenu} className="block text-center w-full text-[#1475F4] font-semibold px-4 py-2 rounded-full border-2 border-[#1475F4] hover:bg-[#E8F1FE] transition-colors">
+                                        Sign In
+                                    </Link>
+                                    <Link to="/signup" onClick={closeMobileMenu} className="block text-center w-full bg-[#1475F4] text-white px-4 py-2 rounded-full font-semibold hover:bg-[#1268DA] transition-colors">
+                                        Create Account
+                                    </Link>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+        </header>
+    );
 };
 
 export default Navbar;

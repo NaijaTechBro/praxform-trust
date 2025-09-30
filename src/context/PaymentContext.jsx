@@ -1,5 +1,3 @@
-// src/context/PaymentContext.js
-
 import React, { createContext, useState, useContext, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
@@ -44,6 +42,25 @@ export const PaymentProvider = ({ children }) => {
             setLoading(false);
         }
     };
+
+
+    // ✅ 1. Add new function to fetch plans publicly (no token needed)
+    const getPublicPlans = useCallback(async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            // Use a direct axios call, not the authenticated helper
+            const response = await axios.get(`${API_BASE_URL}/payments/public-plans`);
+            setPlans(response.data.data);
+            return response.data.data;
+        } catch (err) {
+            const errorMessage = err.response?.data?.message || 'Failed to load pricing plans.';
+            setError(errorMessage);
+            toast.error(errorMessage);
+        } finally {
+            setLoading(false);
+        }
+    }, [API_BASE_URL]);
 
     /**
      * Fetches all available subscription plans from the API.
@@ -100,6 +117,7 @@ export const PaymentProvider = ({ children }) => {
         getPlans,
         createCheckoutSession,
         getCustomerPortal,
+        getPublicPlans,
     };
 
     return (

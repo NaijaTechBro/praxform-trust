@@ -33,7 +33,6 @@ const StatsCard = ({ icon, title, value, previousValue }) => {
         <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-50">{currentValue}</h3>
         <div className="flex items-center text-sm mt-1">
           {trend !== 'neutral' && (
-            // Trend colors work fine in both modes, no change needed
             <span className={`flex items-center font-semibold ${trendColor}`}>
               <TrendIcon className="mr-1" />
               {change.toFixed(1)}%

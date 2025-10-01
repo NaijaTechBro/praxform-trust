@@ -4,7 +4,7 @@ import Header from '../../../components/Auth/Header';
 import InputField from '../../../components/Auth/InputField';
 import yellow from '../../../assets/yellow-padlock.png';
 import { useAuth } from '../../../context/AuthContext';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const ResetPassword = () => { // Removed setPage from props
     const [password, setPassword] = useState('');
@@ -131,7 +131,7 @@ const ResetPassword = () => { // Removed setPage from props
                             onClick={() => navigate('/signin')}
                             className="w-full py-3 font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition rounded-lg"
                         >
-                            Return to Sign In
+                           <Link to="/signin">Return to Sign In</Link>
                         </button>
                     </form>
                 </div>

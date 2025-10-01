@@ -141,7 +141,7 @@ const VerifyCode = ({ fromPage }) => {
                             onClick={() => navigate('/signin')} 
                             className="w-full py-3 font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition rounded-lg"
                         >
-                            Return to Sign In
+                            <Link to="/signin">Return to Sign In</Link>
                         </button>
                     </div>
                 </div>

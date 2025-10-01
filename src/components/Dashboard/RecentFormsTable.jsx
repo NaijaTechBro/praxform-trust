@@ -7,7 +7,6 @@ import ConfirmationModal from '../../components/NewForm/ConfirmationModal';
 import Spinner from '../Common/Spinner';
 import { toast } from 'react-toastify';
 
-// Define the icons for clarity and consistency
 const iconEye = <FiEye size={20} />;
 const iconDownload = <FiDownload size={20} />;
 const iconDelete = <FiMoreVertical size={20} />;
@@ -51,7 +50,6 @@ const RecentFormsTable = ({ limit = 5 }) => {
         navigate(`/forms/edit/${formId}`);
     };
 
-    // MODIFIED: This function now finds the full form object by its ID
     const confirmDelete = (formId) => {
         const form = forms.find(f => f._id === formId);
         if (form) {

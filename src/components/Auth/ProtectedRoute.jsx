@@ -11,8 +11,6 @@ const FullPageLoader = () => (
 const ProtectedRoute = () => {
     const { user, loading: authLoading } = useAuth();
 
-    // This logic is now foolproof because this component is never
-    // the direct landing page for an OAuth redirect.
     if (authLoading) {
         return <FullPageLoader />;
     }

@@ -48,6 +48,7 @@ import BlogPostEditor from './pages/Blog/BlogPostEditor';
 
 // Context Providers
 import { AuthProvider } from './context/AuthContext';
+import { MfaProvider } from './context/MfaContext';
 import { FormProvider } from './context/FormContext';
 import { SubmissionProvider } from './context/SubmissionContext';
 import { WebhookProvider } from './context/WebhookContext';
@@ -62,10 +63,12 @@ import { UploadProvider } from './context/UploadContext';
 import { BlogProvider } from './context/BlogContext';
 import { PublicProvider } from './context/PublicContext';
 
+
 const App = () => {
   return (
     <ThemeProvider>
       <AuthProvider>
+        <MfaProvider>
         <FormProvider>
           <SubmissionProvider>
             <WebhookProvider>
@@ -140,6 +143,7 @@ const App = () => {
             </WebhookProvider>
           </SubmissionProvider>
         </FormProvider>
+        </MfaProvider>
       </AuthProvider>
     </ThemeProvider>
   );

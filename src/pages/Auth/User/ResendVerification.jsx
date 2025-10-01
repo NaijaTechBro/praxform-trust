@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, AlertTriangle } from 'lucide-react';
+import { Link } from 'react-router-dom'
 import mail from '../../../assets/mailcode.png';
 import Header from '../../../components/Auth/Header';
 import InputField from '../../../components/Auth/InputField';
@@ -89,7 +90,7 @@ const ResendVerification = ({ setPage }) => {
                             onClick={() => setPage('signIn')}
                             className="w-full py-3 font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition rounded-lg"
                         >
-                            Return to Sign In
+                            <Link to="/signin">Return to Sign In</Link>
                         </button>
                     </form>
                 </div>

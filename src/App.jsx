@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/Home';
 import SignIn from './pages/Auth/User/SignIn';
 import CreateAccount from './pages/Auth/User/CreateAccount';
-import LoginCode from './pages/Auth/User/LoginCode';
+import VerifyLoginPage from './pages/Auth/User/VerifyLoginPage';
 import ForgotPassword from './pages/Auth/User/ForgotPassword';
 import ResetPassword from './pages/Auth/User/ResetPassword';
 import ResendVerification from './pages/Auth/User/ResendVerification';
@@ -67,6 +67,7 @@ import { PublicProvider } from './context/PublicContext';
 const App = () => {
   return (
     <ThemeProvider>
+      <Router>
       <AuthProvider>
         <MfaProvider>
         <FormProvider>
@@ -80,16 +81,15 @@ const App = () => {
                         <UploadProvider>
                           <BlogProvider>
                             <PublicProvider>
-                            <Router>
                               <Routes>
                                 {/* --- Public Routes (Accessible to everyone) --- */}
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/signin" element={<SignIn />} />
                                 <Route path="/signup" element={<CreateAccount />} />
-                                <Route path="/login-code" element={<LoginCode />} />
                                 <Route path="/forgot-password" element={<ForgotPassword />} />
                                 <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
                                 <Route path="/verify-code" element={<VerifyCode />} />
+                                <Route path="/verify-login" element={<VerifyLoginPage/>}/>
                                 <Route path="/resend-verification" element={<ResendVerification />} />
                                 <Route path="/demo" element={<BookADemo />} />
                                 <Route path="/pricing" element={<Pricing />} />
@@ -131,7 +131,6 @@ const App = () => {
                                   <Route path="/blog-admin/edit/:id" element={<BlogPostEditor />} />
                                 </Route>
                               </Routes>
-                            </Router>
                             </PublicProvider>
                           </BlogProvider>
                         </UploadProvider>
@@ -145,6 +144,7 @@ const App = () => {
         </FormProvider>
         </MfaProvider>
       </AuthProvider>
+      </Router>
     </ThemeProvider>
   );
 };

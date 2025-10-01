@@ -53,17 +53,19 @@ export const MfaProvider = ({ children }) => {
         }
     }, [API_BASE_URL, logout]);
     
-    const disableMfa = useCallback(async () => {
+    const disableMfa = async () => { 
         setIsLoading(true);
         setError(null);
         try {
             const response = await axios.put(`${API_BASE_URL}/mfa/disable`, {});
             toast.success(response.data.message || "Two-Factor Authentication has been disabled.");
+            
             setUser(prevUser => ({
                 ...prevUser,
                 mfaEnabled: false,
                 mfaMethod: null
             }));
+
             return { success: true };
         } catch (err) {
             const message = err.response?.data?.message || 'Failed to disable MFA.';
@@ -73,7 +75,8 @@ export const MfaProvider = ({ children }) => {
         } finally {
             setIsLoading(false);
         }
-    }, [API_BASE_URL, setUser]);
+    };
+
 
     const value = {
         isLoading,

@@ -16,7 +16,7 @@ const SignIn = () => {
 
     useEffect(() => {
         if (user) {
-            navigate('/dashboard');
+            navigate('/dashboard', { replace: true });
         }
     }, [user, navigate]);
 
@@ -30,15 +30,13 @@ const SignIn = () => {
         
         const result = await login({ email, password });
         
-        if (result.success && result.mfaRequired) {
-            navigate('/login-code', { state: { email } });
-        } else if (result.success) {
+       if (result.success && !result.mfaRequired) {
             toast.success("Login successful!");
-            navigate('/dashboard');
-        } else {
+            navigate('/dashboard', { replace: true });
+        } else if (!result.success) {
             setLocalError(result.message || 'An unknown error occurred.');
         }
-    };
+    }; 
 
     if (user) {
         return (

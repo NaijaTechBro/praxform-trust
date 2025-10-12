@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Public pages
 import HomePage from './pages/Home';
+import ScrollToTop from './components/Common/ScrollToTop';
 import SignIn from './pages/Auth/User/SignIn';
 import CreateAccount from './pages/Auth/User/CreateAccount';
 import VerifyLoginPage from './pages/Auth/User/VerifyLoginPage';
@@ -68,6 +69,7 @@ const App = () => {
   return (
     <ThemeProvider>
       <Router>
+        <ScrollToTop />
       <AuthProvider>
         <MfaProvider>
         <FormProvider>

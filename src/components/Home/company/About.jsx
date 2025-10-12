@@ -6,16 +6,16 @@ import { Link } from 'react-router-dom';
 
 const About = () => {
   const teamMembers = [
-    {
-      name: 'Asaolu OluwaToyin',
-      role: 'CEO & Founder',
-      imageUrl: 'https://via.placeholder.com/200'
-    },
-    {
-      name: 'Sodiq Baki Adeiza',
-      role: 'Principal Developer & Co-founder',
-      imageUrl: 'https://res.cloudinary.com/dkcazf954/image/upload/v1701160793/blogposts/file_k7e4lb.jpg'
-    },
+    // {
+    //   name: 'Asaolu OluwaToyin',
+    //   role: 'CEO & Founder',
+    //   imageUrl: 'https://via.placeholder.com/200'
+    // },
+    // {
+    //   name: 'Sodiq Baki Adeiza',
+    //   role: 'Principal Developer & Co-founder',
+    //   imageUrl: 'https://res.cloudinary.com/dkcazf954/image/upload/v1701160793/blogposts/file_k7e4lb.jpg'
+    // },
     // Add more team members here if needed, with relevant images
     // {
     //   name: 'John Smith',

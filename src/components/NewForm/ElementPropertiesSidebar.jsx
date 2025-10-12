@@ -5,7 +5,6 @@ import { FiPlus, FiTrash2 } from 'react-icons/fi';
 const ElementPropertiesSidebar = ({ selectedElement, onUpdate }) => {
   if (!selectedElement) {
     return (
-      // Empty state updated for dark mode
       <div className="w-full h-full flex items-center justify-center p-4">
         <p className="text-center text-gray-500 dark:text-gray-400 text-sm">Select an element on the form to edit its properties.</p>
       </div>

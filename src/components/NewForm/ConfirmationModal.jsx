@@ -4,7 +4,6 @@ const ConfirmationModal = ({ show, title, message, onConfirm, onCancel, confirmT
     if (!show) return null;
 
     return (
-        // Modal updated for dark mode
         <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex justify-center items-center p-4">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-sm p-6 relative">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">{title}</h3>

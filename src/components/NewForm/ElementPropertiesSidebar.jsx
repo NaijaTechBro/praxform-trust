@@ -124,6 +124,24 @@ const ElementPropertiesSidebar = ({ selectedElement, onUpdate }) => {
           </div>
         )}
 
+        {/* --- NEW: Layout Row Properties --- */}
+        {selectedElement.type === 'layout-row' && (
+            <div>
+                <label htmlFor="columns" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Number of Columns
+                </label>
+                <input
+                    type="number"
+                    id="columns"
+                    className="w-full p-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-sm"
+                    value={selectedElement.columns || 2}
+                    onChange={handleInputChange}
+                    min="1"
+                    max="4" // Set a reasonable max
+                />
+            </div>
+        )}
+
         {selectedElement.type !== 'layout-row' && selectedElement.type !== 'embed' && (
           <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
             <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Validation</h3>

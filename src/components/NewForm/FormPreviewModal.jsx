@@ -1,4 +1,5 @@
 import React from 'react';
+import SignaturePad from './SignaturePad';
 
 // A recursive function to render any field, including those nested in layout rows
 const renderField = (field) => {
@@ -95,9 +96,10 @@ const renderField = (field) => {
     }
     if (field.type === 'signature') {
         return fieldWrapper(field.label, 
-            <div className="w-full h-24 p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm">[Signature Pad Placeholder]</div>
+            <SignaturePad />
         );
     }
+
 
     // Final fallback for any truly unsupported types
     return <p className="text-red-500 text-sm">Unsupported field type: {field.type}</p>;

@@ -1,113 +1,106 @@
 import React from 'react';
-import { FiPlus, FiTrash2 } from 'react-icons/fi';
+import { FiPlus } from 'react-icons/fi';
 import create from '../../assets/statscard/create.png';
-import { useNavigate } from 'react-router-dom';
-import ImageUploader from '../Common/ImageUploader';
+import EditableFieldWrapper from './EditableFieldWrapper';
+import SignaturePad from './SignaturePad';
 
-const FormBuilderArea = ({
-    formFields,
-    setFormFields,
-    setSelectedElement,
-    selectedElement,
-    onDeleteField,
-    onDrop,
-    onStartFromScratch,
-    onUseTemplate,
-    headerImage,
-    watermarkImage
-}) => {
-    const navigate = useNavigate();
-
-    const handleInlineImageUpload = (fieldId, imageData) => {
-        const updatedFields = formFields.map(field => {
-            if (field.id === fieldId) {
-                return { ...field, ...imageData };
-            }
-            return field;
-        });
-        setFormFields(updatedFields);
-    };
-
-    const handleDragOver = (e) => e.preventDefault();
-    
-    const renderField = (field) => {
-        if (!field) return null;
-        const isSelected = selectedElement && selectedElement.id === field.id;
-
-        if (field.type === 'image') {
-            return (
-                <div key={field.id} onClick={() => setSelectedElement(field)} className={`relative p-4 mb-4 border rounded-lg cursor-pointer ${isSelected ? 'border-blue-500 bg-blue-50 dark:bg-gray-700' : 'border-gray-200 dark:border-gray-700'}`}>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{field.label}</label>
-                    {field.url ? (
-                        <img 
-                            src={field.url} 
-                            alt={field.altText || 'Form content image'} 
-                            className="w-full max-h-64 object-contain rounded-md bg-gray-100 dark:bg-gray-700" 
-                        />
-                    ) : (
-                        <ImageUploader 
-                            folder={`forms/inline_images`}
-                            onUploadSuccess={(data) => handleInlineImageUpload(field.id, data)}
-                            placeholderText="Upload Content Image"
-                        />
-                    )}
-                     <button onClick={(e) => { e.stopPropagation(); onDeleteField(field.id); }} className="absolute top-2 right-2 p-1 rounded-full bg-red-100 text-red-600 hover:bg-red-200 focus:outline-none">
-                        <FiTrash2 size={16} />
-                     </button>
-                </div>
-            );
-        }
-
-        // Fallback for other simple types for brevity
+// ... (renderPreviewField helper function is correct and unchanged) ...
+const renderPreviewField = (field) => {
+    if (!field) return null;
+  
+    if (field.type === 'signature') {
         return (
-            <div key={field.id} onClick={() => setSelectedElement(field)} className={`relative p-4 mb-4 border rounded-lg cursor-pointer ${isSelected ? 'border-blue-500 bg-blue-50 dark:bg-gray-700' : 'border-gray-200 dark:border-gray-700'}`}>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{field.label}</label>
-                <input type={field.type} placeholder={field.placeholder} className="w-full p-2 border border-gray-300 rounded-md bg-gray-50" readOnly />
-                <button onClick={(e) => { e.stopPropagation(); onDeleteField(field.id); }} className="absolute top-2 right-2 p-1 rounded-full bg-red-100 text-red-600 hover:bg-red-200 focus:outline-none">
-                    <FiTrash2 size={16} />
-                </button>
+            <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {field.label || 'Signature'} {field.isRequired && <span className="text-red-500">*</span>}
+                </label>
+                <SignaturePad isBuilderPreview={true} />
             </div>
         );
-    };
-
-     // Light mode style for the watermark (this is correct)
-    const watermarkStyle = watermarkImage?.url ? {
-        backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), url(${watermarkImage.url})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center center',
-        backgroundSize: 'contain',
-    } : {};
-    
-    // FIX: Corrected styles for the dark mode watermark
-    const darkWatermarkStyle = watermarkImage?.url ? {
-        backgroundImage: `linear-gradient(rgba(31, 41, 55, 0.96), rgba(31, 41, 55, 0.96)), url(${watermarkImage.url})`, // Using gray-800 with 96% opacity
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center center',
-        backgroundSize: 'contain',
-    } : {};
+    }
+    const placeholderText = field.type.charAt(0).toUpperCase() + field.type.slice(1);
+    const displayPlaceholder = field.placeholder || `[${placeholderText} Placeholder]`;
+    return (
+        <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {field.label || 'Field Label'} {field.isRequired && <span className="text-red-500">*</span>}
+            </label>
+            <div className="w-full p-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700/50 text-sm text-gray-500 dark:text-gray-400 truncate">
+                {displayPlaceholder}
+            </div>
+        </div>
+    );
+};
 
 
-    if (formFields.length === 0) {
+// ... (renderEditableField helper function is correct and unchanged) ...
+const renderEditableField = (field, props) => {
+    if (!field) return null;
+    const { selectedElement } = props;
+    const isSelected = selectedElement?.id === field.id;
+
+    if (field.type === 'layout-row') {
+        const gridColsClass = `grid-cols-${field.columns || 2}`;
         return (
-            <div
+            <EditableFieldWrapper
+                key={field.id}
+                field={field}
+                isSelected={isSelected}
+                {...props}
+            >
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{field.label}</label>
+                <div
+                    className={`grid ${gridColsClass} gap-4 p-4 border border-dashed border-gray-300 dark:border-gray-600 rounded-md min-h-[100px] bg-gray-50 dark:bg-gray-700/50`}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => { e.stopPropagation(); props.handleDrop(e, field.id); }}
+                >
+                    {(field.children || []).map(child =>
+                        renderEditableField(child, props)
+                    )}
+                </div>
+            </EditableFieldWrapper>
+        );
+    }
+
+    return (
+        <EditableFieldWrapper
+            key={field.id}
+            field={field}
+            isSelected={isSelected}
+            {...props}
+        >
+            {renderPreviewField(field)}
+        </EditableFieldWrapper>
+    );
+};
+
+
+const FormBuilderArea = (props) => {
+    // 1. Destructure handleDrop (the correct name) instead of onDrop
+    const { 
+        formFields, handleDrop, onStartFromScratch, onUseTemplate, 
+        headerImage, watermarkImage 
+    } = props;
+    
+    const handleDragOver = (e) => e.preventDefault();
+
+    if (!formFields || formFields.length === 0) {
+        return (
+             <div
                 className="min-h-[calc(100vh-170px)] bg-white dark:bg-gray-800 rounded-lg shadow-md flex items-center justify-center p-8"
-                onDrop={(e) => onDrop(e)}
+                // 2. Use handleDrop here
+                onDrop={(e) => handleDrop(e, null)}
                 onDragOver={handleDragOver}
             >
-                <div className="text-center p-10 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg max-w-lg">
+                 <div className="text-center p-10 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg max-w-lg">
                     <img className="mx-auto mb-4" src={create} width="100px" alt="Create new form" />
                     <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2">Create New Form</h3>
-                    <p className="text-gray-500 dark:text-gray-400 mb-6 text-base">Drag and drop form elements from the left sidebar or start with a template</p>
-                    <div className="flex justify-center space-x-4">
-                        <button
-                            onClick={onStartFromScratch}
-                            className="flex items-center bg-transparent border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700"
-                        >
+                    <p className="text-gray-500 dark:text-gray-400 mb-6 text-base">Drag and drop form elements here or start with a template.</p>
+                     <div className="flex justify-center space-x-4">
+                        <button onClick={onStartFromScratch} className="flex items-center bg-transparent border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700">
                             <FiPlus className="mr-2" /> Start From Scratch
                         </button>
-                        <button
-                            onClick={onUseTemplate}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
+                        <button onClick={onUseTemplate} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">
                             Use Template
                         </button>
                     </div>
@@ -118,18 +111,20 @@ const FormBuilderArea = ({
 
     return (
         <div
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 min-h-[calc(100vh-170px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600"
-            onDrop={(e) => onDrop(e)}
+            className="w-full h-full p-8 bg-gray-100 dark:bg-gray-900 overflow-y-auto group"
             onDragOver={handleDragOver}
-            style={{ ...watermarkStyle, ...darkWatermarkStyle }}
+            // 3. And use handleDrop here
+            onDrop={(e) => handleDrop(e, null)}
+            onDragEnd={props.handleDragEnd}
         >
             {headerImage?.url && (
                 <div className="mb-8 flex justify-center">
                     <img src={headerImage.url} alt="Form Header" className="max-w-md max-h-48 h-auto object-contain" />
                 </div>
             )}
-            {formFields.map((field) => renderField(field))}
-            <style>{`.dark .dark-watermark { background-image: ${darkWatermarkStyle.backgroundImage} !important; }`}</style>
+            <div className="space-y-4">
+                {formFields.map(field => renderEditableField(field, props))}
+            </div>
         </div>
     );
 };

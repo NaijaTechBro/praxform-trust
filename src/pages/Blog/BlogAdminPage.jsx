@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useBlog } from '../../context/BlogContext';
 import { Link } from 'react-router-dom';
 import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
-import Spinner from '../../components/common/Spinner';
+import Spinner from '../../components/Common/Spinner';
 import { format } from 'date-fns';
 
 const BlogAdminPage = () => {

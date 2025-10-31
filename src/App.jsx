@@ -46,6 +46,8 @@ import SettingsPage from './pages/Settings/SettingsPage';
 // Blog
 import BlogAdminPage from './pages/Blog/BlogAdminPage';
 import BlogPostEditor from './pages/Blog/BlogPostEditor';
+import BlogListPage from './pages/Blog/user/BlogListPage';
+import BlogDetailPage from './pages/Blog/user/BlogDetailPage';
 
 // Context Providers
 import { AuthProvider } from './context/AuthContext';
@@ -101,7 +103,8 @@ const App = () => {
                                 <Route path='/about' element={<About />} />
                                 <Route path='/careers' element={<Careers />} />
                                 <Route path="/organization-setup" element={<OrganizationSetup />} />
-
+                                <Route path="/blog" element={<BlogListPage />} />
+                                <Route path="/blog/:slug" element={<BlogDetailPage />} />
                                 {/* --- New Google OAuth Routes --- */}
                                 <Route path="/auth/google/callback" element={<GoogleCallback />} />
 

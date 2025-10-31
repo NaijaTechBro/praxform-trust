@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Mail, Link as LinkIcon, Copy, Calendar, Info, CheckCircle, AlertTriangle } from 'lucide-react';
+import { X, Mail, Link as LinkIcon, Copy, Calendar, Info, CheckCircle, AlertTriangle, Phone } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { Switch } from '@headlessui/react';
 import DatePicker from 'react-datepicker';
@@ -22,6 +22,7 @@ const SendFormModal = ({ show, onClose, formId, formName }) => {
 
     const [recipients, setRecipients] = useState([]);
     const [manualEmail, setManualEmail] = useState('');
+    const [manualPhone, setManualPhone] = useState('')
     const [file, setFile] = useState(null);
     const [oneTimeUse, setOneTimeUse] = useState(true);
     const [smsCode, setSmsCode] = useState(true);
@@ -33,16 +34,28 @@ const SendFormModal = ({ show, onClose, formId, formName }) => {
     const [submissionStatus, setSubmissionStatus] = useState('idle');
     const [errorMessage, setErrorMessage] = useState('');
 
-    const handleAddEmail = () => {
-        if (manualEmail.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(manualEmail.trim())) {
-            if (recipients.every(r => r.email !== manualEmail.trim())) {
-                setRecipients(prev => [...prev, { email: manualEmail.trim(), name: manualEmail.split('@')[0] }]);
-                setManualEmail('');
-            } else {
-                toast.warn("Recipient email already added.");
-            }
-        } else {
+    const handleAddRecipient = () => {
+        const email = manualEmail.trim();
+        const phone = manualPhone.trim();
+
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             toast.error("Please enter a valid email address.");
+            return;
+        }
+
+        if (recipients.every(r => r.email !== email)) {
+            setRecipients(prev => [
+                ...prev, 
+                { 
+                    email: email, 
+                    name: email.split('@')[0], 
+                    phone: phone || null // Add phone, default to null if empty
+                }
+            ]);
+            setManualEmail('');
+            setManualPhone(''); 
+        } else {
+            toast.warn("Recipient email already added.");
         }
     };
 
@@ -57,10 +70,11 @@ const SendFormModal = ({ show, onClose, formId, formName }) => {
                     const workbook = XLSX.read(data, { type: 'array' });
                     const sheetName = workbook.SheetNames[0];
                     const worksheet = workbook.Sheets[sheetName];
-                    const json = XLSX.utils.sheet_to_json(worksheet, { header: ["email", "name"] });
+                    const json = XLSX.utils.sheet_to_json(worksheet, { header: ["email", "name", "phone"] });
                     const importedRecipients = json.map(row => ({
                         email: row.email?.toLowerCase().trim(),
-                        name: row.name || row.email?.split('@')[0] || ''
+                        name: row.name || row.email?.split('@')[0] || '',
+                        phone: row.phone?.toString().trim() || null
                     })).filter(r => r.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(r.email));
 
                     if (importedRecipients.length === 0) {
@@ -113,6 +127,11 @@ const SendFormModal = ({ show, onClose, formId, formName }) => {
             toast.error('Please add at least one recipient.');
             return;
         }
+        if (smsCode && recipients.some(r => !r.phone)) {
+            toast.error('SMS Code is enabled, but one or more recipients are missing a phone number.');
+            return;
+        }
+
         setIsSending(true);
         const options = { recipients, oneTimeUse, smsCode, emailAuth, dueDate };
         try {
@@ -161,20 +180,43 @@ const SendFormModal = ({ show, onClose, formId, formName }) => {
                                     </button>
                                 </div>
                             )}
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Recipient's Email</label>
-                                <div className="relative">
-                                    <input
-                                        type="email"
-                                        value={manualEmail}
-                                        onChange={(e) => setManualEmail(e.target.value)}
-                                        onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddEmail())}
-                                        className="w-full pl-4 pr-12 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 focus:ring-1 transition-colors"
-                                        placeholder="johndoe@gmail.com"
-                                    />
-                                    <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                                        <SparkleIcon isSpinning={manualEmail.length > 0} />
+                            
+                            <div className="space-y-3">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Recipient's Email</label>
+                                    <div className="relative">
+                                        <input
+                                            type="email"
+                                            value={manualEmail}
+                                            onChange={(e) => setManualEmail(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddRecipient())}
+                                            className="w-full pl-4 pr-12 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 focus:ring-1 transition-colors"
+                                            placeholder="johndoe@gmail.com"
+                                        />
+                                        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                                            <SparkleIcon isSpinning={manualEmail.length > 0} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Recipient's Phone (Optional)
+                                        <Tooltip content="Required if SMS Code is enabled. Use E.164 format (e.g., +14155552671).">
+                                            <Info size={14} className="ml-1.5 text-gray-400 cursor-pointer inline" />
+                                        </Tooltip>
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="tel"
+                                            value={manualPhone}
+                                            onChange={(e) => setManualPhone(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddRecipient())}
+                                            className="w-full pl-4 pr-12 py-3 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:border-blue-500 focus:ring-blue-500 focus:ring-1 transition-colors"
+                                            placeholder="+14155552671"
+                                        />
+                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                            <Phone size={18} />
+                                        </div>
                                     </div>
                                 </div>
                                 <label htmlFor="file-upload" className="cursor-pointer text-sm text-blue-600 hover:underline mt-2 inline-block">
@@ -194,6 +236,11 @@ const SendFormModal = ({ show, onClose, formId, formName }) => {
                                                 <div className="ml-3">
                                                     <p className="text-sm font-semibold text-gray-800 dark:text-gray-200">{r.name}</p>
                                                     <p className="text-sm text-gray-500 dark:text-gray-400">{r.email}</p>
+                                                    {r.phone && (
+                                                        <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center">
+                                                            <Phone size={12} className="mr-1" /> {r.phone}
+                                                        </p>
+                                                    )}
                                                 </div>
                                             </div>
                                             <button onClick={() => handleRemoveRecipient(index)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
@@ -206,7 +253,7 @@ const SendFormModal = ({ show, onClose, formId, formName }) => {
 
                             <div className="space-y-4 border-t border-gray-200 dark:border-gray-700 pt-5">
                                 <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
-        Add Security and Access Control
+        Add                         Security and Access Control
     </h3>
                                 <div className="flex justify-between items-center">
                                     <label className="text-gray-600 dark:text-gray-300 font-medium flex items-center">

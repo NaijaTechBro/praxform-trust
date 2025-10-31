@@ -77,7 +77,7 @@ const Submissions = () => {
     };
 
     const handleDownload = () => {
-        console.log("Downloading submission data...");
+       // console.log("Downloading submission data...");
     };
 
     const getStatusStyle = (status) => {

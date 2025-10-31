@@ -1,19 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'
 import dashboardImage from '../../assets/hero-dashboard.png';
+import { useBlog } from '../../context/BlogContext';
+import { differenceInHours } from 'date-fns'
 
 const Hero = () => {
+  const { latestPost, getLatestPost } = useBlog();
+  const [showLatestPost, setShowLatestPost] = useState(false);
+
+  console.log("Latest post from context:", latestPost);
+  // Fetch the latest post on component mount
+  useEffect(() => {
+    getLatestPost();
+  }, [getLatestPost]);
+
+  // Check if the latest post is within 24 hours
+  useEffect(() => {
+    if (latestPost) {
+      const hoursSinceCreation = differenceInHours(
+        new Date(),
+        new Date(latestPost.createdAt)
+      );
+      if (hoursSinceCreation < 24) {
+        setShowLatestPost(true);
+      } else {
+        setShowLatestPost(false);
+      }
+    }
+  }, [latestPost]);
+
+  // Helper function to render the badge
+  const renderNewFeatureBadge = () => {
+    if (showLatestPost && latestPost) {
+      return (
+        <Link
+          to={`/blog/${latestPost.slug}`}
+          className="inline-flex items-center justify-center bg-gray-200 rounded-full p-1 mb-6 text-sm font-medium text-gray-700 hover:bg-gray-300 transition-colors"
+        >
+          <span className="bg-[#1475F4] rounded-full text-white px-3 py-1 text-xs font-semibold mr-2">New</span>
+          {latestPost.title}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+          </svg>
+        </Link>
+      );
+    }
+
+    // Default badge
+    return (
+      <div className="inline-flex items-center justify-center bg-gray-200 rounded-full p-1 mb-6 text-sm font-medium text-gray-700">
+        <span className="bg-[#1475F4] rounded-full text-white px-3 py-1 text-xs font-semibold mr-2">New</span>
+        The Financial Brighter Application
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+        </svg>
+      </div>
+    );
+  };
   return (
     <section className="py-20 md:py-28 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         
         {/* New Feature Badge */}
-        <div className="inline-flex items-center justify-center bg-gray-200 rounded-full p-1 mb-6 text-sm font-medium text-gray-700">
+        {/* <div className="inline-flex items-center justify-center bg-gray-200 rounded-full p-1 mb-6 text-sm font-medium text-gray-700">
           <span className="bg-[#1475F4] rounded-full text-white px-3 py-1 text-xs font-semibold mr-2">New</span>
           The Financial Brighter Application
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns=s"http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
           </svg>
-        </div>
+        </div> */}
+        {renderNewFeatureBadge()}
 
         {/* Headline */}
         <h1 className="text-4xl md:text-6xl font-extrabold text-[#030405] leading-tight tracking-tighter       font-serif">

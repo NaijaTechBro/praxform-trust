@@ -4,7 +4,7 @@ import { useBlog } from '../../context/BlogContext';
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css"; // Import the CSS
 import { FiSave, FiEye } from 'react-icons/fi';
-import Spinner from '../../components/common/Spinner';
+import Spinner from '../../components/Common/Spinner';
 import ImageUploader from '../../components/Common/ImageUploader'; // Your reusable image uploader
 import { Switch } from '@headlessui/react';
 import { toast } from 'react-toastify';

@@ -9,7 +9,7 @@ const UpdateNumberModal = ({ onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Update number:', { countryCode, phoneNumber });
+        //console.log('Update number:', { countryCode, phoneNumber });
         toast.success('Phone number updated successfully!');
         onClose();
     };

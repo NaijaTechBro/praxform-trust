@@ -16,7 +16,7 @@ const SignaturePad = ({ isBuilderPreview }) => {
             alert("Please provide a signature first.");
         } else {
             const dataUrl = sigPad.current.getTrimmedCanvas().toDataURL('image/png');
-            console.log("Signature Data URL:", dataUrl); // You can see the saved image data in the console
+           // console.log("Signature Data URL:", dataUrl); // You can see the saved image data in the console
             alert("Signature Saved! (Check Console)");
         }
     };

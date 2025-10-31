@@ -360,7 +360,7 @@ const W9 = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form Submitted:', formData);
+    //console.log('Form Submitted:', formData);
     // You can add your API call or further processing logic here
   };
 

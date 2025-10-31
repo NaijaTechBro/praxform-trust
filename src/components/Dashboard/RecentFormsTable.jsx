@@ -81,7 +81,7 @@ const handleDeleteForm = async () => {
     
     const handleDownloadForm = (formId, formName) => {
         toast.info(`Download for "${formName}" will be implemented soon.`);
-        console.log(`Placeholder: Download form with ID ${formId}`);
+        //console.log(`Placeholder: Download form with ID ${formId}`);
     };
 
     return (

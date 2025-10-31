@@ -8,7 +8,7 @@ const Hero = () => {
   const { latestPost, getLatestPost } = useBlog();
   const [showLatestPost, setShowLatestPost] = useState(false);
 
-  console.log("Latest post from context:", latestPost);
+  //console.log("Latest post from context:", latestPost);
   // Fetch the latest post on component mount
   useEffect(() => {
     getLatestPost();

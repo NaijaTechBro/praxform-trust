@@ -42,14 +42,17 @@ export const AuthProvider = ({ children }) => {
         setToken(newToken);
     };
 
-    const logout = (redirect = true) => {
+    const logout = async (redirect = true) => {
+        
+        try { 
+            await axios.post(`${API_BASE_URL}/auth/logout`); 
+        } catch(e) {
+            console.error("Logout backend call failed", e);
+        }
         setUser(null);
         setToken(null);
         setMfaPendingEmail(null);
         localStorage.removeItem('userToken');
-        
-        // Optional: Call backend logout to clear cookies
-        try { axios.post(`${API_BASE_URL}/auth/logout`); } catch(e) {}
 
         if (redirect) {
             window.location.href = '/signin';

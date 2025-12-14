@@ -3,19 +3,17 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-// Create the Auth Context
 const AuthContext = createContext();
 
-// Create a custom hook to use the Auth Context
 export const useAuth = () => {
     return useContext(AuthContext);
 };
 
-// Auth Provider Component
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem('userToken'));
-    const [loading, setLoading] = useState(true);
+    // Start loading as true to prevent "flicker" of login screen while checking cookies
+    const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null);
     const [mfaPendingEmail, setMfaPendingEmail] = useState(null);
 
@@ -24,6 +22,10 @@ export const AuthProvider = ({ children }) => {
     const subscribers = useRef([]);
 
     const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+    // --- CRITICAL CHANGE 1: Enable Cookies globally for Axios ---
+    // This allows the frontend to send the HTTPOnly cookies set by the backend
+    axios.defaults.withCredentials = true; 
 
     // --- Session Management (Token Refreshing) ---
     const subscribeTokenRefresh = (cb) => {
@@ -45,6 +47,10 @@ export const AuthProvider = ({ children }) => {
         setToken(null);
         setMfaPendingEmail(null);
         localStorage.removeItem('userToken');
+        
+        // Optional: Call backend logout to clear cookies
+        try { axios.post(`${API_BASE_URL}/auth/logout`); } catch(e) {}
+
         if (redirect) {
             window.location.href = '/signin';
         }
@@ -70,16 +76,19 @@ export const AuthProvider = ({ children }) => {
                 if (err.response?.status === 401 && !originalRequest._retry) {
                     originalRequest._retry = true;
 
+                    // Add /auth/me to excluded list to prevent infinite loops if cookies are invalid
                     const urlsToExclude = [
                         '/auth/login',
                         '/auth/verify-mfa',
                         '/auth/register',
-                        '/auth/refresh-token'
+                        '/auth/refresh-token',
+                        '/auth/me' 
                     ];
 
                     if (urlsToExclude.some(url => originalRequest.url.endsWith(url))) {
                         return Promise.reject(err);
                     }
+
                     if (isRefreshing.current) {
                         return new Promise(resolve => {
                             subscribeTokenRefresh(newToken => {
@@ -91,6 +100,7 @@ export const AuthProvider = ({ children }) => {
 
                     isRefreshing.current = true;
                     try {
+                        // This call relies on the HttpOnly RefreshToken Cookie!
                         const response = await axios.post(`${API_BASE_URL}/auth/refresh-token`);
                         const newAccessToken = response.data.accessToken;
 
@@ -101,8 +111,11 @@ export const AuthProvider = ({ children }) => {
                         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                         return axios(originalRequest);
                     } catch (refreshErr) {
-                        toast.error('Session expired. Please log in again.');
-                        logout(true); // Redirect on session expiry
+                        // Silent fail for "check auth" requests, redirect for others
+                        if (!originalRequest.url.includes('/auth/me')) {
+                            toast.error('Session expired. Please log in again.');
+                            logout(true);
+                        }
                         return Promise.reject(refreshErr);
                     } finally {
                         isRefreshing.current = false;
@@ -119,6 +132,7 @@ export const AuthProvider = ({ children }) => {
     }, [API_BASE_URL]);
 
 
+    // --- Updated fetchMe Logic ---
     useEffect(() => {
         const fetchMe = async () => {
             const isReauthFlow = new URLSearchParams(window.location.search).has('reauth_token');
@@ -126,24 +140,22 @@ export const AuthProvider = ({ children }) => {
                 setLoading(false);
                 return;
             }
-
-            if (token) {
-                setLoading(true);
-                setError(null);
-                try {
-                    const response = await axios.get(`${API_BASE_URL}/auth/me`);
-                    setUser(response.data);
-                } catch (err) {
-                    setError(err.response?.data?.message || 'Failed to fetch user data.');
-                    logout(false);
-                } finally {
-                    setLoading(false);
-                }
-            } else {
-                setLoading(false);
+            
+            setLoading(true);
+            setError(null);
+            try {
+                // This request will now send Cookies due to withCredentials=true
+                const response = await axios.get(`${API_BASE_URL}/auth/me`);
+                setUser(response.data);
+            
+            } catch (err) {
                 setUser(null);
+                if (token) logout(false); 
+            } finally {
+                setLoading(false);
             }
         };
+
         fetchMe();
     }, [token, API_BASE_URL]);
 
@@ -162,13 +174,14 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         }
     };
-
-    const login = async (credentials) => {
+const login = async (credentials) => {
         setLoading(true);
         setError(null);
         try {
             const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
             const data = response.data;
+
+            // 1. Handle MFA
             if (data.mfaRequired) {
                 setMfaPendingEmail(credentials.email);
                  navigate('/verify-login', { 
@@ -176,14 +189,20 @@ export const AuthProvider = ({ children }) => {
                     state: { mfaMethod: data.mfaMethod } 
                 });
                 return { success: true, mfaRequired: true };
-
             }
-            if (response.status === 200 && data.accessToken) {
-                const authToken = data.accessToken;
-                localStorage.setItem('userToken', authToken);
-                setToken(authToken);
+
+            // 2. Handle Success (Cookie Mode)
+            // We check for data.success because data.accessToken is NOT in the body anymore (it's in the cookie)
+            if (response.status === 200 && data.success) {
+                // Update the user state immediately using the data from the response
+                setUser(data.user); 
+                // We do NOT set localStorage here anymore, the cookie is set automatically by the browser
                 return { success: true };
             }
+            
+            // Safety fallback
+            return { success: false, message: 'Unexpected response from server.' };
+
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed.');
             return { success: false, message: err.response?.data?.message || 'Login failed.' };
